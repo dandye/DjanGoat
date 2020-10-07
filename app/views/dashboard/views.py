@@ -3,12 +3,14 @@ from __future__ import unicode_literals
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_protect
 from app.decorators import user_is_authenticated
 from app.views import utils
 
 
 @require_http_methods(["GET"])
 @user_is_authenticated
+@csrf_protect
 def home(request):
     user = utils.current_user(request)
     context = user.__dict__

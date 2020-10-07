@@ -2,12 +2,14 @@ from __future__ import unicode_literals
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from app.models.User.user import User
 
 
 @require_http_methods(["GET"])
+@csrf_protect
 def login(request):
     return render(request, "sessions/login.html")
 
@@ -20,6 +22,7 @@ def logout(request):  # pylint: disable=unused-argument
 
 
 @require_http_methods(["GET", "POST"])
+@csrf_protect
 def sessions_index(request, email=None, password=None, path='/dashboard/home'):
     if request.method == "POST":
         # Set path variable

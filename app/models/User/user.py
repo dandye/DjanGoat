@@ -8,6 +8,7 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
+from flask import jsonify
 
 from app.models.PaidTimeOff.paid_time_off import PaidTimeOff
 from app.models.Performance.performance import Performance
@@ -15,6 +16,7 @@ from app.models.Retirement.retirement import Retirement
 from app.models.Schedule.schedule import Schedule
 from app.models.WorkInfo.work_info import WorkInfo
 from . import user_data
+from .flask_jsonify import flask_jsonify
 
 
 @python_2_unicode_compatible
@@ -152,8 +154,29 @@ class User(models.Model):
     def full_name(self):
         return self.first_name + ' ' + self.last_name
 
+    def first_name(self):
+        return self.first_name
+
     def safe_name(self):
         return mark_safe(self.first_name)
+
+    def jsonify_name(self):
+        return jsonify(self.first_name)
+
+    def safe_name_flask_jsonify(self):
+        return flask_jsonify(self.first_name)
+
+    def jsonify_name_mark_safe(self):
+        return jsonify(mark_safe(self.first_name))
+
+    def safe_name_flask_jsonify_mark_safe(self):
+        return flask_jsonify(mark_safe(self.first_name))
+
+    def mark_safe_jsonify_name(self):
+        return mark_safe(jsonify(self.first_name))
+
+    def mark_safe_safe_name_flask_jsonify(self):
+        return mark_safe(flask_jsonify(self.first_name))
 
     @staticmethod
     def validate_signup_form(form):
